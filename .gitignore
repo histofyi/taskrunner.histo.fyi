@@ -133,3 +133,6 @@ config.toml
 
 # Output
 /output
+
+#MacOS
+.DS_Store
