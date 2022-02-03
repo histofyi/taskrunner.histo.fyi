@@ -17,13 +17,27 @@ inputfile = 'input.pdb'
 outputfile = 'output/test.pdb'
 
 
-def add_stats_row(item):
+"""
+This function adds a row to the item array in the statistics dictionary
+
+Args:
+    item (string) : the name of the activity which has just been completed
+"""
+def add_stats_row(item: str):
     statistics['items'].append({'step':item, 'started_at':datetime.datetime.now()})
     if item == 'start' or item == 'end':
         statistics[item] = datetime.datetime.now()
 
 
-def process_statistics(steps, inputfile, outputfile):
+"""
+This function processes the statistics dictionary at the end of a simulation
+
+Args:
+    steps (integer) : the number of steps in the simulation
+    inputfile (string) : the filename of the structure being simulated
+    outputfile (string) : the filename of the structure after simulation
+"""
+def process_statistics(steps : int, inputfile : str, outputfile : str):
     statistics['steps'] = steps
     statistics['input'] = inputfile
     statistics['output'] = outputfile
@@ -39,7 +53,16 @@ def process_statistics(steps, inputfile, outputfile):
     print(statistics)
 
 
-def run_simulation(steps, inputfile, outputfile, report_frequency=1000):
+"""
+This function runs a simulation using OpenMM
+
+Args:
+    steps (integer) : the number of steps in the simulation
+    inputfile (string) : the filename of the structure being simulated
+    outputfile (string) : the filename of the structure after simulation
+"""
+# adapted from the OpenMM simulatePDB example
+def run_simulation(steps : int, inputfile : str, outputfile : str, report_frequency : int =1000):
     add_stats_row('start')
     pdb = PDBFile('input.pdb')
     add_stats_row('force_field')
@@ -63,4 +86,6 @@ def run_simulation(steps, inputfile, outputfile, report_frequency=1000):
     add_stats_row('end')
     process_statistics(steps, inputfile, outputfile)
 
+
+# run the simulation
 run_simulation(steps, inputfile, outputfile, report_frequency=report_frequency)
